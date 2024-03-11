@@ -1,5 +1,36 @@
 #!/bin/bash
 
+instr="Benutzung: arg1 = Datei zur Umbenennung, arg2 = Zieldatei"
+
+# catch wrong argument inputs
+if [[ -z $1 ]];
+then
+	echo "Fehler: Es wurde kein Dateiname für die Verarbeitung angegeben!"
+	echo $instr
+	exit 1
+fi
+
+if [[ ! -e $1 ]];
+then
+	echo "Fehler: $1 existiert nicht!"
+	echo $instr
+	exit 1
+fi
+
+if [[ ! -f $1 ]];
+then
+	echo "Fehler: $1 ist keine Datei!"
+	echo $instr
+	exit 1
+fi
+
+if [[ -z $2 ]];
+then
+	echo "Fehler: Es wurde kein Zielname angegeben!"
+	echo $instr
+	exit 1
+fi
+
 # initialization of variables
 originalFileName="$1"
 targetFileName="$2"
@@ -10,18 +41,6 @@ targetPath=$PWD/$targetFileName
 
 declare -i count=0
 
-# catch wrong argument inputs
-if [[ ! -e $originalFileName ]];
-then
-	echo "Fehler: $originalFileName existiert nicht!"
-	exit 1
-fi
-
-if [[ -z $targetFileName ]];
-then
-	echo "Fehler: Es wurde kein Zielname angegeben!"
-	exit 1
-fi
 
 # check for filetype / filesuffix
 if [[ ${targetFileName:1} == *.* ]];
@@ -34,13 +53,13 @@ else
 fi
 
 # adjust path-input for target file
-if [[ $path == $point ]]; #leerer Pfad
+if [[ $path == $point ]]; # empty path
 then
 	path=""
-elif [[ $path == ./* ]]; #Pfad mit ./ angegeben
+elif [[ $path == ./* ]]; # path with "./"
 then
 	path="${path:1}"
-elif [[ $path != /* ]]; #Pfad ohne / angegeben
+elif [[ $path != /* ]]; # path with "/"
 then
 	path="/$path"
 fi
@@ -68,7 +87,7 @@ do
 done
 
 mv "$originalFileName" "$targetPath"
-
 echo "$originalFileName wurde in $targetFileName umbenannt!"
-echo "Pfad: $targetPath"
+echo "Pfad der neuen Datei: $targetPath"
+
 exit 0 
