@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Variableninitialisierung
+# initialization of variables
 originalFileName="$1"
 targetFileName="$2"
 point="."
@@ -10,7 +10,7 @@ targetPath=$PWD/$targetFileName
 
 declare -i count=0
 
-# Falscheingaben abfangen
+# catch wrong argument inputs
 if [[ ! -e $originalFileName ]];
 then
 	echo "Fehler: $originalFileName existiert nicht!"
@@ -23,7 +23,7 @@ then
 	exit 1
 fi
 
-# Dateityp- / Dateisuffixfestlegung
+# check for filetype / filesuffix
 if [[ ${targetFileName:1} == *.* ]];
 then
 	targetSuffix=$(echo "$targetFileName" | rev | cut -d'.' -f1 | rev)
@@ -33,7 +33,7 @@ else
 	targetPrefix=$(basename "$targetFileName")
 fi
 
-# Dateipfadeingabe für Zieldatei anpassen
+# adjust path-input for target file
 if [[ $path == $point ]]; #leerer Pfad
 then
 	path=""
@@ -45,7 +45,7 @@ then
 	path="/$path"
 fi
 
-# Solange es eine Datei $targetPath gibt, soll der Zielname $targetFileName verändert werden
+# as long as $targetPath already exists, $targetFileName has to be changed
 while [[ -e $targetPath ]];
 do
 	targetFileName=$targetPrefix$targetSuffix
